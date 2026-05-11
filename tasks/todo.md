@@ -30,7 +30,7 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] L — Tests (17 passing across 3 files: schema, business-rules, team)
 
 ## Phase M — UI
-- [ ] M — Dashboard page + 9 components + error boundaries + health indicator
+- [x] M — Dashboard page + 12 components + error boundary + health indicator (smoke tested OK)
 
 ## Phase N — Docs
 - [ ] N — README (verbatim prompt, error table, production roadmap, trade-offs, privacy, calibration honesty, self-heal section)

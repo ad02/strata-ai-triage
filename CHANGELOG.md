@@ -52,6 +52,29 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - `tests/team.test.ts` — 4 tests on team directory (every role mapped, getTeamMember lookup, fallback for unknown role, no real PII).
 - All 17 tests passing.
 
+### UI (dashboard)
+- `app/layout.tsx` — wraps `ThemeProvider` (next-themes, system default), `TooltipProvider`, `Toaster` (sonner).
+- `app/page.tsx` — dashboard shell: header + sidebar (InboxList) + main (EnquiryDetail).
+- `components/header.tsx` — title, health indicator, "New enquiry" button.
+- `components/health-indicator.tsx` — polls `/api/health` every 60s, shows red/green dot with tooltip detail.
+- `components/inbox-list.tsx` — left column. Classification dot per item, sender name, subject, relative time, classification label, HVL/URGENT badges.
+- `components/enquiry-detail.tsx` — right column composer. Includes a React error boundary around the analysis card so one bad render doesn't kill the page; the boundary offers a Retry button.
+- `components/analysis-card.tsx` — classification, confidence, urgency, geography, reasoning, flags, recommended action. Has a skeleton state for analyzing.
+- `components/banners.tsx` — low-confidence banner (< 0.7), high-value-lead banner (gold), confidentiality-required banner (violet).
+- `components/routing-card.tsx` — shows team member from `lib/team.ts`, mailto link, "review before forwarding" caveat.
+- `components/suggested-reply-card.tsx` — view + edit subject and body, Copy / Edit / Send (mock) buttons. Sonner toast on copy/send.
+- `components/new-enquiry-dialog.tsx` — modal with from-name, from-email, subject, body fields. Calls `useAnalyze` on submit.
+- `components/flag-chips.tsx` — flag chips with tooltip descriptions.
+- `lib/format.ts` — pure formatters for relative time, classification labels/colors, urgency badges, confidence tone, geography labels, flag descriptions, route labels.
+- `components/theme-provider.tsx` — next-themes wrapper.
+- Smoke-tested: `next dev` boots clean, `/` renders 200, `/api/health` returns the actual Gemini status.
+
+### Operational note: free-tier daily quota
+- Discovered during smoke testing: `gemini-2.5-flash` free tier is **20 requests per day** (not the 1500/day documented previously). After running the cache script (9 reqs) + a few health probes + manual tests, we hit the daily quota.
+- Cached seeded analyses still display correctly (dashboard fully functional for the 9 seeded enquiries).
+- New user-pasted enquiries will fail with a friendly "rate limit" message until quota resets at UTC midnight or the user upgrades to paid tier.
+- Documented in README "Known limitations".
+
 ### Notes
 - Next.js 16 (released ahead of original Next.js 15 plan) — Turbopack is now default; `next lint` removed in favor of direct `eslint` invocation. No code changes needed for our use case.
 - Replaces a prior wrong-domain prototype (generic strata management) — the new build is tailored to **Strata Business Brokers**, an Australian M&A brokerage. See git history (`git log --all`) for prior work.
