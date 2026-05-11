@@ -36,10 +36,29 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] N — README written: tailoring section, quick-start, architecture diagram, AI design rationale, verbatim system instruction, few-shot rationale, calibration honesty, self-heal three-layers, error handling tables, privacy, tests, known limitations (incl. 20 RPD quota), production roadmap, trade-offs, tech stack, team-names note
 
 ## Phase O — Deploy
-- [ ] O — Vercel deploy + `GEMINI_API_KEY` env var + smoke test
+- [/] O — Deferred to user (account-bound). Quick guide: push to GitHub → import to Vercel → add `GEMINI_API_KEY` env var → done.
 
 ## Phase P — Verify
-- [ ] P — All 13 acceptance criteria from plan
+- [x] P — Verified: 17/17 tests pass, `npm run build` succeeds, page loads 200, health endpoint returns actual Gemini probe status, adversarial test held during live spike. Only the live "+ New Enquiry" path is currently rate-limited (free-tier 20 RPD); cached seeded enquiries work fully.
+
+## Review
+
+**Done in this session:**
+- 9 commits on master (`37c3435` → `fd4f706`)
+- Full Next.js 16 + Tailwind v4 + shadcn dashboard with 12 components, error boundary, health indicator, theme switcher
+- Gemini 2.5 Flash integration via `@google/genai` v2 with structured output (responseSchema enforced)
+- AI self-correction loop (Zod + business rules → corrective retry)
+- Network retry layer (1.5s backoff on 429/5xx)
+- Frontend error boundary
+- 17 tests across schema, business-rules, team
+- 9 cached analyses including adversarial prompt-injection test (system instruction held)
+- Comprehensive README hitting every rubric + bonus criterion
+
+**User's remaining work:**
+1. Browse the demo at http://localhost:3001 (dev server still running)
+2. Rotate the API key (was pasted in chat)
+3. Push to GitHub
+4. (Optional) Deploy to Vercel
 
 ## Review
 

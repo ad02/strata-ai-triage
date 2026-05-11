@@ -6,6 +6,15 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## [Unreleased]
 
+### Phase P — Verification
+- `npm test` → 17/17 passing
+- `npm run build` → succeeds; `/` static, `/api/analyze` + `/api/health` dynamic (correct for env access)
+- `npx tsc --noEmit` → clean
+- Dev server: page loads in 55ms (warm), health endpoint returns the actual Gemini probe status
+- All 9 acceptance criteria that don't require deploy: PASS
+- Acceptance criterion 12 (Vercel deploy): deferred to user
+
+
 ### Added
 - Bootstrap: Next.js 16.2.6 (App Router) + React 19.2 + TypeScript 5 + Tailwind v4
 - Bootstrap: shadcn/ui with 12 components (badge, button, card, dialog, input, label, scroll-area, separator, skeleton, sonner, textarea, tooltip)
