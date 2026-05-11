@@ -33,7 +33,7 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] M — Dashboard page + 12 components + error boundary + health indicator (smoke tested OK)
 
 ## Phase N — Docs
-- [ ] N — README (verbatim prompt, error table, production roadmap, trade-offs, privacy, calibration honesty, self-heal section)
+- [x] N — README written: tailoring section, quick-start, architecture diagram, AI design rationale, verbatim system instruction, few-shot rationale, calibration honesty, self-heal three-layers, error handling tables, privacy, tests, known limitations (incl. 20 RPD quota), production roadmap, trade-offs, tech stack, team-names note
 
 ## Phase O — Deploy
 - [ ] O — Vercel deploy + `GEMINI_API_KEY` env var + smoke test
