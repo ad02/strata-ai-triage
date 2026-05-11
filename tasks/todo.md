@@ -22,8 +22,8 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] G — `lib/gemini.ts` (`@google/genai` wrapper + AI self-correction loop)
 - [x] H — `app/api/analyze/route.ts` (POST + retry/timeout)
 - [x] H.1 — `app/api/health/route.ts` (Gemini connectivity probe)
-- [ ] I — Spike Gemini call live (validate `responseSchema` accepts our shape) — **needs `GEMINI_API_KEY`**
-- [ ] J — Pre-cache seeded analyses → `lib/seeded-analyses.ts` — **needs `GEMINI_API_KEY`**
+- [x] I — Spike Gemini call live (validate `responseSchema` accepts our shape) — passed; adversarial test held
+- [x] J — Pre-cache seeded analyses → `lib/seeded-analyses.ts` (9 analyses, throttled 13s for 5 RPM free tier)
 
 ## Phase K — State + tests
 - [ ] K — `lib/store.ts` (Zustand) + `lib/use-analyze.ts`

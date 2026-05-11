@@ -31,6 +31,19 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - `app/api/analyze/route.ts` — POST handler. Validates body (non-empty, ≤10k chars), calls `analyzeEnquiry()`, maps error codes to HTTP status (400/413/429/500/502/503/504).
 - `app/api/health/route.ts` — GET handler. Returns 200 if Gemini probe succeeds, 503 if degraded. Drives the dashboard's red/green health indicator.
 
+### Caching layer
+- `scripts/precache-seeds.ts` — one-shot script that runs each seeded enquiry through `analyzeEnquiry()` and writes results to `lib/seeded-analyses.ts`. Throttled to 13s between calls (free tier is 5 RPM on `gemini-2.5-flash`).
+- `lib/seeded-analyses.ts` — generated cache, 9 analyses. Dashboard renders these instantly on click; only user-pasted enquiries hit Gemini live. Documented in README.
+- npm script `cache-seeds`. Dev deps: `tsx` (TypeScript runner) and `dotenv`.
+
+### Live-spike validation results (Phase I)
+- `@google/genai` v2 SDK works correctly with our nested `responseSchema` (no `$ref` issues).
+- All 9 seeded enquiries returned valid JSON parsed cleanly by Zod.
+- The adversarial prompt-injection enquiry was correctly classified as `general_question`, urgency `low`, route `intake`, with `out_of_scope` flag — system instruction held.
+- Self-correction loop wired correctly (didn't trigger on these — outputs were clean first try).
+- Network retry triggered once (enq-006, attempts=2) and recovered cleanly.
+- Average latency ~5s per enquiry. Free tier 5 RPM is the binding constraint, not latency.
+
 ### Notes
 - Next.js 16 (released ahead of original Next.js 15 plan) — Turbopack is now default; `next lint` removed in favor of direct `eslint` invocation. No code changes needed for our use case.
 - Replaces a prior wrong-domain prototype (generic strata management) — the new build is tailored to **Strata Business Brokers**, an Australian M&A brokerage. See git history (`git log --all`) for prior work.
