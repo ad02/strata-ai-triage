@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Mail, Pencil, Send } from "lucide-react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,14 +15,11 @@ export function SuggestedReplyCard({ reply }: { reply: SuggestedReply }) {
   const [subject, setSubject] = useState(reply.subject);
   const [body, setBody] = useState(reply.body);
 
-  const reset = (next: SuggestedReply) => {
-    setSubject(next.subject);
-    setBody(next.body);
-  };
-  // Reset when prop changes
-  if (reply.subject !== subject && !editing && reply.subject !== "" && body === "") {
-    reset(reply);
-  }
+  useEffect(() => {
+    setSubject(reply.subject);
+    setBody(reply.body);
+    setEditing(false);
+  }, [reply.subject, reply.body]);
 
   const copyToClipboard = async () => {
     const text = `Subject: ${subject}\n\n${body}`;
@@ -36,26 +33,26 @@ export function SuggestedReplyCard({ reply }: { reply: SuggestedReply }) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-base">
-          <Mail className="h-4 w-4 text-emerald-500" />
+    <Card className="shadow-sm border-border/60">
+      <CardHeader className="pb-3">
+        <CardTitle className="flex items-center gap-2 text-sm font-semibold">
+          <Mail className="h-3.5 w-3.5 text-emerald-500" />
           Suggested reply
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
         <div>
-          <Label htmlFor="reply-subject" className="text-xs uppercase tracking-wider text-muted-foreground">
+          <Label htmlFor="reply-subject" className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground font-medium">
             Subject
           </Label>
           {editing ? (
-            <Input id="reply-subject" value={subject} onChange={(e) => setSubject(e.target.value)} className="mt-1" />
+            <Input id="reply-subject" value={subject} onChange={(e) => setSubject(e.target.value)} className="mt-1.5 text-sm" />
           ) : (
-            <p className="mt-1 text-sm font-medium">{subject}</p>
+            <p className="mt-1.5 text-sm font-medium">{subject}</p>
           )}
         </div>
-        <div>
-          <Label htmlFor="reply-body" className="text-xs uppercase tracking-wider text-muted-foreground">
+        <div className="border-t border-border/60 pt-3">
+          <Label htmlFor="reply-body" className="text-[10px] uppercase tracking-[0.08em] text-muted-foreground font-medium">
             Body
           </Label>
           {editing ? (
@@ -63,25 +60,29 @@ export function SuggestedReplyCard({ reply }: { reply: SuggestedReply }) {
               id="reply-body"
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              rows={10}
-              className="mt-1 font-sans text-sm"
+              rows={12}
+              className="mt-1.5 font-sans text-sm leading-relaxed"
             />
           ) : (
-            <p className="mt-1 text-sm text-foreground/90 whitespace-pre-wrap">{body}</p>
+            <p className="mt-1.5 text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
+              {body}
+            </p>
           )}
         </div>
-        <div className="flex gap-2 pt-1">
-          <Button size="sm" variant="outline" onClick={copyToClipboard}>
-            <Copy className="h-3.5 w-3.5 mr-1.5" />
+        <div className="flex gap-2 pt-2 border-t border-border/60">
+          <Button size="sm" variant="outline" onClick={copyToClipboard} className="text-xs">
+            <Copy className="h-3 w-3 mr-1.5" />
             Copy
           </Button>
-          <Button size="sm" variant="outline" onClick={() => setEditing((e) => !e)}>
-            <Pencil className="h-3.5 w-3.5 mr-1.5" />
+          <Button size="sm" variant="outline" onClick={() => setEditing((e) => !e)} className="text-xs">
+            <Pencil className="h-3 w-3 mr-1.5" />
             {editing ? "Done" : "Edit"}
           </Button>
-          <Button size="sm" onClick={fakeSend}>
-            <Send className="h-3.5 w-3.5 mr-1.5" />
-            Send (mock)
+          <div className="flex-1" />
+          <Button size="sm" onClick={fakeSend} className="text-xs">
+            <Send className="h-3 w-3 mr-1.5" />
+            Send
+            <span className="ml-1 text-[10px] opacity-70">(demo)</span>
           </Button>
         </div>
       </CardContent>

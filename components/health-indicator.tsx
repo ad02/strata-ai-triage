@@ -41,24 +41,43 @@ export function HealthIndicator() {
       ? "bg-emerald-500"
       : health.state === "degraded"
         ? "bg-red-500"
-        : "bg-slate-400 animate-pulse";
+        : "bg-muted-foreground/40 animate-pulse";
+
+  const ring =
+    health.state === "ok"
+      ? "ring-emerald-500/20"
+      : health.state === "degraded"
+        ? "ring-red-500/20"
+        : "ring-muted-foreground/10";
 
   const label =
     health.state === "ok"
-      ? `Gemini OK · ${health.latency_ms} ms`
+      ? `Gemini · ${health.latency_ms}ms`
       : health.state === "degraded"
-        ? `Gemini degraded · ${health.error}`
+        ? `Gemini degraded — ${truncate(health.error, 80)}`
         : "Checking Gemini…";
+
+  const stateText =
+    health.state === "ok"
+      ? "Gemini live"
+      : health.state === "degraded"
+        ? "Gemini degraded"
+        : "Checking…";
 
   return (
     <Tooltip>
-      <TooltipTrigger className="flex items-center gap-2 text-xs text-muted-foreground cursor-help">
-        <span className={`h-2 w-2 rounded-full ${dot}`} aria-hidden />
-        <span className="hidden sm:inline">
-          {health.state === "ok" ? "Gemini" : health.state === "degraded" ? "Gemini ⚠" : "…"}
+      <TooltipTrigger className="flex items-center gap-2 text-[12px] text-muted-foreground hover:text-foreground transition-colors cursor-help">
+        <span className={`relative flex h-2 w-2`}>
+          <span className={`absolute inline-flex h-full w-full rounded-full ${dot} opacity-60 animate-ping`} />
+          <span className={`relative inline-flex h-2 w-2 rounded-full ring-2 ${ring} ${dot}`} />
         </span>
+        <span className="hidden sm:inline tabular-nums">{stateText}</span>
       </TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
+}
+
+function truncate(s: string, n: number): string {
+  return s.length > n ? `${s.slice(0, n)}…` : s;
 }

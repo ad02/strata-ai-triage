@@ -6,6 +6,21 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## [Unreleased]
 
+### UI polish — Linear-like refined dashboard
+- Switched font from Geist to **Inter** (with JetBrains Mono for code) — cleaner SaaS-dashboard standard. Inter loaded via `next/font/google` with `display: swap` and OpenType features (cv11/ss01/ss03) enabled.
+- Tightened the design system:
+  - `--radius` 0.625rem → 0.5rem for crisper corners
+  - Added tabular-nums utility, custom thin scrollbar, refined ::selection
+  - Font features and font smoothing for sharper rendering
+- Header redesigned: small brand-mark tile with Building2 icon, two-line title/subtitle, sticky-blur backdrop
+- Inbox list refined: sticky section header with count, tighter rhythm, selected state shown as a left vertical bar (Linear pattern), smaller classification dots with background ring, added CONF (confidentiality) chip alongside HVL/URGENT
+- Detail pane refined: bigger semibold title, dot-separated meta line, generous spacing, refined empty state with circled icon
+- Cards: shadow-sm + border-border/60 (subtle depth), tighter card headers (h-3.5 icons, smaller titles), uppercase tracked field labels
+- Banners: lighter tone, subtle gradient on gold (HVL), Lock icon for confidentiality
+- Routing card: avatar with initials, role pill on the right, group-hover underline on email
+- Suggested reply card: separated subject/body with dividers, demo label on Send button
+- Health indicator: animated ping ring + ring-glow + tabular-nums, hover-text-foreground transition
+
 ### Phase P — Verification
 - `npm test` → 17/17 passing
 - `npm run build` → succeeds; `/` static, `/api/analyze` + `/api/health` dynamic (correct for env access)
