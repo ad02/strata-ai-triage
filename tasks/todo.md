@@ -10,12 +10,12 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] B.1 — Install `@google/genai`, `zod`, `zustand`, `vitest`
 - [x] B.2 — `npx shadcn init` + add 12 components
 - [x] B.3 — `package.json` test scripts, `vitest.config.ts`, `.env.example`, `CHANGELOG.md`, this `tasks/todo.md`
-- [ ] B.4 — Commit Phase B as one bootstrap checkpoint
+- [x] B.4 — Commit Phase B as one bootstrap checkpoint (`f85354b`)
 
 ## Phase C — Schema & domain
-- [ ] C — `lib/schema.ts` (Zod, 9 fields incl. geography)
-- [ ] D — `lib/team.ts` (David Lin, Ross Competente, role mapping)
-- [ ] E — `lib/sample-enquiries.ts` (8 + 1 adversarial)
+- [x] C — `lib/schema.ts` (Zod, 9 fields incl. geography + business-rule validator)
+- [x] D — `lib/team.ts` (David Lin, Ross Competente, role mapping)
+- [x] E — `lib/sample-enquiries.ts` (8 + 1 adversarial)
 
 ## Phase F — AI integration
 - [ ] F — `lib/prompt.ts` + `lib/few-shot.ts` (4 examples)
