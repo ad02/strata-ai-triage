@@ -26,8 +26,8 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] J — Pre-cache seeded analyses → `lib/seeded-analyses.ts` (9 analyses, throttled 13s for 5 RPM free tier)
 
 ## Phase K — State + tests
-- [ ] K — `lib/store.ts` (Zustand) + `lib/use-analyze.ts`
-- [ ] L — Tests (schema, api with mocked Gemini, team mapping, self-correction loop)
+- [x] K — `lib/store.ts` (Zustand) + `lib/use-analyze.ts`
+- [x] L — Tests (17 passing across 3 files: schema, business-rules, team)
 
 ## Phase M — UI
 - [ ] M — Dashboard page + 9 components + error boundaries + health indicator

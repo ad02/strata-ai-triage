@@ -44,6 +44,14 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - Network retry triggered once (enq-006, attempts=2) and recovered cleanly.
 - Average latency ~5s per enquiry. Free tier 5 RPM is the binding constraint, not latency.
 
+### State + tests
+- `lib/store.ts` — Zustand store. Holds `enquiries`, `selectedId`, `analyses`, `statuses`, `errors`. Initial state hydrates seeded enquiries with their pre-cached analyses (status="done") so the dashboard renders instantly. Selectors for the currently-selected enquiry's data.
+- `lib/use-analyze.ts` — `useAnalyze()` hook. Wraps fetch to /api/analyze, drives store state, maps server error codes to friendly user-facing messages.
+- `tests/schema.test.ts` — 7 tests on Zod schema (well-formed, confidence range, unknown enum, missing field, empty flags, geography "unspecified").
+- `tests/business-rules.test.ts` — 6 tests on `validateBusinessRules()` (clean, low-confidence rule, out-of-scope rule, high-value-lead routing rule).
+- `tests/team.test.ts` — 4 tests on team directory (every role mapped, getTeamMember lookup, fallback for unknown role, no real PII).
+- All 17 tests passing.
+
 ### Notes
 - Next.js 16 (released ahead of original Next.js 15 plan) — Turbopack is now default; `next lint` removed in favor of direct `eslint` invocation. No code changes needed for our use case.
 - Replaces a prior wrong-domain prototype (generic strata management) — the new build is tailored to **Strata Business Brokers**, an Australian M&A brokerage. See git history (`git log --all`) for prior work.
