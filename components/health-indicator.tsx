@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { friendlyGeminiError } from "@/lib/errors";
 
 type HealthState =
   | { state: "checking" }
@@ -54,7 +55,7 @@ export function HealthIndicator() {
     health.state === "ok"
       ? `Gemini · ${health.latency_ms}ms`
       : health.state === "degraded"
-        ? `Gemini degraded — ${truncate(health.error, 80)}`
+        ? friendlyGeminiError(health.error)
         : "Checking Gemini…";
 
   const stateText =
@@ -68,7 +69,9 @@ export function HealthIndicator() {
     <Tooltip>
       <TooltipTrigger className="flex items-center gap-2 text-[12px] text-muted-foreground hover:text-foreground transition-colors cursor-help">
         <span className={`relative flex h-2 w-2`}>
-          <span className={`absolute inline-flex h-full w-full rounded-full ${dot} opacity-60 animate-ping`} />
+          {health.state === "ok" && (
+            <span className={`absolute inline-flex h-full w-full rounded-full ${dot} opacity-60 animate-ping`} />
+          )}
           <span className={`relative inline-flex h-2 w-2 rounded-full ring-2 ${ring} ${dot}`} />
         </span>
         <span className="hidden sm:inline tabular-nums">{stateText}</span>
@@ -76,8 +79,4 @@ export function HealthIndicator() {
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
-}
-
-function truncate(s: string, n: number): string {
-  return s.length > n ? `${s.slice(0, n)}…` : s;
 }
