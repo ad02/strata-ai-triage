@@ -19,6 +19,18 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 - `lib/team.ts` — static team directory mapping `route_to` roles to real team members from the public team page (David Lin, Ross Competente). Documents the small-firm rationale where multiple roles map to the founder.
 - `lib/sample-enquiries.ts` — 8 seeded enquiries covering the classification × flag matrix plus 1 adversarial prompt-injection test.
 
+### AI core
+- `lib/few-shot.ts` — 4 worked input/output examples (clean buyer / vague / out-of-scope / high-value confidential). Each is one *pattern* — the modal path plus the three production failure modes.
+- `lib/prompt.ts` — `systemInstruction` exported as a single `const`. Sections: domain context (M&A brokerage, not strata mgmt), adversarial-input handler (positioned early to defend against injection), classification rules, confidence calibration, urgency, geography, routing, flags, reply drafting (Australian English), reasoning, output instructions. Few-shots appended last so they're fresh in attention when generating.
+- `lib/gemini.ts` — `@google/genai` v2 wrapper. Builds `responseSchema` from Zod enum options (single source of truth). Includes:
+  - **AI self-correction loop**: 1 retry if Zod fails OR `validateBusinessRules()` flags a violation; sends Gemini a corrective note describing the specific issue.
+  - Network retry: 1 retry on rate_limit/5xx with 1.5s backoff.
+  - 20s `AbortController` per call.
+  - Privacy-aware structured logging (metadata only, never enquiry content).
+  - `probeGemini()` lightweight liveness check used by /api/health.
+- `app/api/analyze/route.ts` — POST handler. Validates body (non-empty, ≤10k chars), calls `analyzeEnquiry()`, maps error codes to HTTP status (400/413/429/500/502/503/504).
+- `app/api/health/route.ts` — GET handler. Returns 200 if Gemini probe succeeds, 503 if degraded. Drives the dashboard's red/green health indicator.
+
 ### Notes
 - Next.js 16 (released ahead of original Next.js 15 plan) — Turbopack is now default; `next lint` removed in favor of direct `eslint` invocation. No code changes needed for our use case.
 - Replaces a prior wrong-domain prototype (generic strata management) — the new build is tailored to **Strata Business Brokers**, an Australian M&A brokerage. See git history (`git log --all`) for prior work.

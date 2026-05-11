@@ -18,12 +18,12 @@ Plan reference: `~/.claude/plans/qa-it-goofy-pond.md`
 - [x] E — `lib/sample-enquiries.ts` (8 + 1 adversarial)
 
 ## Phase F — AI integration
-- [ ] F — `lib/prompt.ts` + `lib/few-shot.ts` (4 examples)
-- [ ] G — `lib/gemini.ts` (`@google/genai` wrapper + AI self-correction loop)
-- [ ] H — `app/api/analyze/route.ts` (POST + retry/timeout)
-- [ ] H.1 — `app/api/health/route.ts` (Gemini connectivity probe)
-- [ ] I — Spike Gemini call live (validate `responseSchema` accepts our shape)
-- [ ] J — Pre-cache seeded analyses → `lib/seeded-analyses.ts`
+- [x] F — `lib/prompt.ts` + `lib/few-shot.ts` (4 examples)
+- [x] G — `lib/gemini.ts` (`@google/genai` wrapper + AI self-correction loop)
+- [x] H — `app/api/analyze/route.ts` (POST + retry/timeout)
+- [x] H.1 — `app/api/health/route.ts` (Gemini connectivity probe)
+- [ ] I — Spike Gemini call live (validate `responseSchema` accepts our shape) — **needs `GEMINI_API_KEY`**
+- [ ] J — Pre-cache seeded analyses → `lib/seeded-analyses.ts` — **needs `GEMINI_API_KEY`**
 
 ## Phase K — State + tests
 - [ ] K — `lib/store.ts` (Zustand) + `lib/use-analyze.ts`
