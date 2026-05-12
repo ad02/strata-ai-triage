@@ -14,9 +14,11 @@ export function HealthIndicator() {
 
   useEffect(() => {
     let cancelled = false;
-    async function check() {
+
+    async function check(fresh: boolean) {
       try {
-        const res = await fetch("/api/health", { cache: "no-store" });
+        const url = fresh ? "/api/health?fresh=1" : "/api/health";
+        const res = await fetch(url, { cache: "no-store" });
         const json = await res.json();
         if (cancelled) return;
         if (json.status === "ok") {
@@ -29,8 +31,14 @@ export function HealthIndicator() {
         setHealth({ state: "degraded", error: err instanceof Error ? err.message : "network" });
       }
     }
-    check();
-    const interval = setInterval(check, 60_000);
+
+    // Initial mount: force one fresh probe.
+    check(true);
+    // Then poll cheaply (server returns 5-min-cached result, no Gemini call
+    // unless TTL expired). This keeps the daily quota safe even with the
+    // dashboard left open for hours.
+    const interval = setInterval(() => check(false), 60_000);
+
     return () => {
       cancelled = true;
       clearInterval(interval);
