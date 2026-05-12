@@ -2,7 +2,12 @@
 
 > AI-powered enquiry triage prototype, built as a take-home for the **AI Developer** role at [Strata Business Brokers](https://stratabusinessbrokers.com.au/).
 
+**🚀 Live demo:** [strata-ai-triage.vercel.app](https://strata-ai-triage.vercel.app/)
+**📦 Source:** [github.com/ad02/strata-ai-triage](https://github.com/ad02/strata-ai-triage)
+
 A staff member's inbox where every incoming enquiry has already been read, classified, urgency-rated, routed to the right person, and pre-drafted with a suggested reply — by Gemini 2.5 Flash, with the AI's confidence and reasoning shown so a human can trust or override.
+
+> **Try the live demo first.** Click any of the 8 seeded enquiries (instant — pre-cached) to see a real Gemini analysis with confidence, urgency, geography, suggested route, and a draft reply. Hit **+ New enquiry** to paste your own; one of the seeded enquiries (`URGENT` from `[unverified]`) is a prompt-injection test that the system instruction correctly traps.
 
 ---
 
