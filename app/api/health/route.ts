@@ -8,6 +8,7 @@ export const dynamic = "force-dynamic";
  * GET /api/health
  *
  * Returns 200 if GEMINI_API_KEY is set AND a recent Gemini probe succeeded.
+ * (Server-side 5-min cached probe to avoid burning daily quota.)
  * Returns 503 otherwise.
  *
  * The actual Gemini probe is **server-side cached for 5 minutes** so that
